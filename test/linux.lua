@@ -1327,11 +1327,11 @@ if S.bpf and not S.__rump then
     -- Update
     local key, klen = ffi.new('int [1]', 0xdead), ffi.sizeof('int')
     local fd, err = assert(S.bpf_map_create(c.BPF_MAP.HASH, klen, klen, 10))
-    assert(S.bpf_map_op(c.BPF_CMD.MAP_UPDATE_ELEM, fd, key, key) == 0)
+    assert(S.bpf_map_op(c.BPF_CMD.MAP_UPDATE_ELEM, fd, key, key) == 0, err)
     -- Retrieve
     local val = ffi.new('int [1]', 0xbeef)
     local ok, err = S.bpf_map_op(c.BPF_CMD.MAP_LOOKUP_ELEM, fd, key, val)
-    assert(ok and key[0] == val[0])
+    assert(ok and key[0] == val[0], err)
     S.close(fd)
   end
   test.bpf_root.test_bpf_prog_load = function()
